@@ -14,14 +14,14 @@ class Myapp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('forms & inputs'),
         ),
-        body: MyHomePage(),
+        body: const MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -31,7 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final formkey = GlobalKey<FormState>();
 
   void submitfn() {
-    print('clicked');
+    if (formkey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('submitted'),
+        ),
+      );
+    }
   }
 
   @override
@@ -48,16 +54,33 @@ class _MyHomePageState extends State<MyHomePage> {
               hintText: 'Enter Full Name',
               labelText: 'Name',
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'please enter your name';
+              }
+              return null;
+            },
           ),
           TextFormField(
-            validator: ,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'please enter email';
+              }
+              return null;
+            },
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
                 icon: Icon(Icons.mail),
-                hintText: 'Enrer your email',
+                hintText: 'please Enter your email',
                 labelText: "E-mail"),
           ),
           TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'please enter DOB';
+              }
+              return null;
+            },
             keyboardType: TextInputType.datetime,
             decoration: const InputDecoration(
               hintText: 'Enter your DOB',
@@ -66,6 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'please enter DOB';
+              }
+              return null;
+            },
             decoration: const InputDecoration(
               icon: Icon(Icons.details),
               hintText: 'Enter full Address',
